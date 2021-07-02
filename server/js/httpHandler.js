@@ -13,8 +13,20 @@ module.exports.initialize = (queue) => {
 };
 
 module.exports.router = (req, res, next = ()=>{}) => {
-  console.log('Serving request type ' + req.method + ' for url ' + req.url);
+  //console.log('Serving request type ' + req.method + ' for url ' + req.url);
+
+  var array = ['up', 'down', 'right', 'left'];
+  var randomDirection = array[Math.floor(Math.random() * 4)];
+  if(req.method === 'GET') {
+    res.write(randomDirection);
+  }
   res.writeHead(200, headers);
   res.end();
   next(); // invoke next() at the end of a request to help with testing!
 };
+
+// this.write = (data) => {
+//   if (data) {
+//     this._data = Buffer.concat([this._data, Buffer.from(data)]);
+//   }
+// };
