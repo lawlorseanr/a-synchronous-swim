@@ -3,7 +3,7 @@
   const serverUrl = 'http://127.0.0.1:3001';
 
   const ajaxGetCommand = () => {
-    setTimeout(ajaxGetCommand, 1000);
+    setTimeout(ajaxGetCommand, 50);
     var cmdUrl = `${serverUrl}/item`
     $.get(cmdUrl, data => {
       if (data) {
@@ -27,7 +27,6 @@
     }
   });
 
-
   /////////////////////////////////////////////////////////////////////
   // The ajax file uploader is provided for your convenience!
   // Note: remember to fix the URL below.
@@ -39,7 +38,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: serverUrl,
+      url: `${serverUrl}/background`,
       cache: false,
       contentType: false,
       processData: false,
