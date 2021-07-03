@@ -56,7 +56,7 @@ module.exports.router = (req, res, next = ()=>{}) => {
           });
           writer.on('error', error => {
             console.log(`Unsuccessful in writing ${this.backgroundImageFile}`)
-            console.log(err);
+            console.log(error);
             res.writeHead(404, headers);
             res.end();
             next();
