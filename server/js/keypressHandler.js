@@ -36,14 +36,12 @@ module.exports.initialize = (callback) => {
 
     // check to see if the keypress itself is a valid message
     if (isValidMessage(key.name)) {
-      console.log('1');
       callback(key.name);
       return; // don't do any more processing on this key
     }
 
     // otherwise build up a message from individual characters
     if (key && (key.name === 'return' || key.name === 'enter')) {
-      console.log('2');
       // on enter, process the message
       logKeypress('\n');
       if (message.length > 0) {
@@ -52,7 +50,6 @@ module.exports.initialize = (callback) => {
       }
     } else {
       // collect the individual characters/keystrokes
-      console.log('3');
       message += (mappedChars[key.name] || key.name);
       logKeypress(key.name);
     }

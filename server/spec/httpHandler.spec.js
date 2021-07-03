@@ -18,9 +18,8 @@ describe('server responses', () => {
     done();
   });
 
-  it('should respond to a GET request for a swim command', (done) => {
-    let {req, res} = server.mock('/', 'GET');
-
+  it('should respond to a random GET request for a swim command', (done) => {
+    let {req, res} = server.mock('/random', 'GET');
     httpHandler.router(req, res);
     expect(res._responseCode).to.equal(200);
     expect(res._ended).to.equal(true);
@@ -28,6 +27,26 @@ describe('server responses', () => {
 
     done();
   });
+
+  it('should respond to a specific GET request for a swim command', (done) => {
+    var {req, res} = server.mock('/down', 'POST');
+    httpHandler.router(req, res);
+
+    var {req, res} = server.mock('/item', 'GET');
+    httpHandler.router(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    expect(res._ended).to.equal(true);
+    expect(res._data.toString()).to.equal('down');
+    expect(res._data.toString()).to.not.equal('up');
+
+    var {req, res} = server.mock('/item', 'GET');
+    httpHandler.router(req, res);
+    expect(res._data.toString()).to.be.empty;
+
+    done();
+  });
+
 
   xit('should respond with 404 to a GET request for a missing background image', (done) => {
     httpHandler.backgroundImageFile = path.join('.', 'spec', 'missing.jpg');
