@@ -1,13 +1,13 @@
 (function() {
 
-  const serverUrl = 'http://127.0.0.1:3000';
+  const serverUrl = 'http://127.0.0.1:3001';
 
   const ajaxGetCommand = () => {
-    setTimeout(ajaxGetCommand, 1000);
+    setTimeout(ajaxGetCommand, 100);
     var cmdUrl = `${serverUrl}/item`
     $.get(cmdUrl, data => {
       if (data) {
-        SwimTeam.move(data.toLowerCase());
+        SwimTeam.move(data);
       }
     })
   }

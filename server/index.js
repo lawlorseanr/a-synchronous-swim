@@ -8,7 +8,7 @@ keypressHandler.initialize(message => {
   messageQueue.enqueue(message);
 });
 
-const port = 3000;
+const port = 3001;
 const ip = '127.0.0.1';
 server.listen(port, ip);
 
