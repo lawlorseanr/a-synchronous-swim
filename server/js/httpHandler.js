@@ -51,15 +51,17 @@ module.exports.router = (req, res, next = ()=>{}) => {
       });
       req.on('end', () => {
         var data = multipart.getFile(rawdata);
-        try {
-          fs.writeFileSync(this.backgroundImageFile, data.data);
-          res.writeHead(201, headers);
-          res.end();
-        } catch (err) {
-          console.log(err);
-          res.writeHead(404, headers);
-          res.end();
-        }
+
+        fs.writeFile(this.backgroundImageFile, data.data, err => {
+          if (err) {
+            console.log(err);
+            res.writeHead(404, headers);
+            res.end();
+          } else {
+            res.writeHead(201, headers);
+            res.end();
+          }
+        });
       });
     }
 
@@ -86,28 +88,25 @@ module.exports.router = (req, res, next = ()=>{}) => {
       res.end();
 
     // GET
-    } else if (req.url === '/background') {
+    } else if (req.url === '/background.jpeg') {
 
-      if (fs.exists(this.backgroundImageFile)) {
-        console.log('exists');
-        var stat = fs.statSync(this.backgroundImageFile);
+      fs.exists(this.backgroundImageFile, exists => {
+        if (exists) {
+          // var stat = fs.statSync(this.backgroundImageFile);
 
-        headers['content-type'] = 'image/jpeg';
-        headers['content-length'] = stat.size;
+          headers['content-type'] = 'image/jpeg';
+          // headers['content-length'] = stat.size;
+          res.writeHead(200, headers);
 
-        console.log(headers);
+          var readStream = fs.createReadStream(this.backgroundImageFile);
+          readStream.pipe(res);
+          // res.end();
+        } else {
+          res.writeHead(404, headers);
+          res.end();
+        }
 
-        res.writeHead(200, headers);
-
-        var readStream = fs.createReadStream(this.backgroundImageFile);
-        readStream.pipe(res);
-
-        // res.end();
-      } else {
-        console.log('does not exist');
-        res.writeHead(404, headers);
-        res.end();
-      };
+      });
     }
   }
 
