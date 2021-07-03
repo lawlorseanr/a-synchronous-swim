@@ -3,7 +3,7 @@
   const serverUrl = 'http://127.0.0.1:3001';
 
   const ajaxGetCommand = () => {
-    setTimeout(ajaxGetCommand, 100);
+    setTimeout(ajaxGetCommand, 1000);
     var cmdUrl = `${serverUrl}/item`
     $.get(cmdUrl, data => {
       if (data) {
@@ -11,7 +11,6 @@
       }
     })
   }
-
   ajaxGetCommand();
 
   const ajaxPostCommand = (cmd) => {
@@ -27,11 +26,15 @@
     }
   });
 
+  $('#spazzButton').on('click', event => {
+    console.log(event);
+  });
+
   /////////////////////////////////////////////////////////////////////
   // The ajax file uploader is provided for your convenience!
   // Note: remember to fix the URL below.
   /////////////////////////////////////////////////////////////////////
-
+  var successcb;
   const ajaxFileUpload = (file) => {
     var formData = new FormData();
     formData.append('file', file);
@@ -45,7 +48,7 @@
       success: () => {
         // reload the page
         window.location = window.location.href;
-      }
+      },
     });
   };
 

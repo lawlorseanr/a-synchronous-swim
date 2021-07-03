@@ -81,11 +81,13 @@ module.exports.router = (req, res, next = ()=>{}) => {
     if (req.url === '/random') {
       var array = ['up', 'down', 'right', 'left'];
       var randomDirection = array[Math.floor(Math.random() * 4)];
+
       res.writeHead(200, headers);
       res.write(randomDirection);
       res.end();
       next();
     } else if (req.url === '/item') {
+
       var messageToSend = messageQueue.dequeue();
       res.writeHead(200, headers);
       if (messageToSend) {
@@ -104,6 +106,7 @@ module.exports.router = (req, res, next = ()=>{}) => {
           console.log(`${this.backgroundImageFile} found.`)
           headers['content-type'] = 'image/jpeg';
           res.writeHead(200, headers);
+          delete headers['content-type'];
 
           var readStream = fs.createReadStream(this.backgroundImageFile);
           readStream.pipe(res);
