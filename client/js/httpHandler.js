@@ -1,9 +1,9 @@
 (function() {
 
-  const serverUrl = 'http://127.0.0.1:3001';
+  const serverUrl = 'http://127.0.0.1:3000';
 
   const ajaxGetCommand = () => {
-    setTimeout(ajaxGetCommand, 50);
+    setTimeout(ajaxGetCommand, 1000);
     var cmdUrl = `${serverUrl}/item`
     $.get(cmdUrl, data => {
       if (data) {

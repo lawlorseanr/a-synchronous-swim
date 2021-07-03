@@ -5,11 +5,10 @@ const server = http.createServer(httpHandler.router);
 const messageQueue = require('./js/messageQueue');
 
 keypressHandler.initialize(message => {
-  console.log('Messages: ', messageQueue.queue())
   messageQueue.enqueue(message);
 });
 
-const port = 3001;
+const port = 3000;
 const ip = '127.0.0.1';
 server.listen(port, ip);
 

@@ -43,17 +43,20 @@ module.exports.router = (req, res, next = ()=>{}) => {
       res.writeHead(200, headers);
       res.end();
     } else if (lowerUrl === '/background') {
-      var data = Buffer.alloc(0);
+
+      var rawdata = Buffer.alloc(0);
       req.on('data', chunk => {
-        data = Buffer.concat([data, Buffer.from(chunk)]);
+        // chunk is already a buffer
+        rawdata = Buffer.concat([rawdata, chunk]);
       });
       req.on('end', () => {
-
+        var data = multipart.getFile(rawdata);
         try {
-          fs.writeFileSync(this.backgroundImageFile, data);
+          fs.writeFileSync(this.backgroundImageFile, data.data);
           res.writeHead(201, headers);
           res.end();
         } catch (err) {
+          console.log(err);
           res.writeHead(404, headers);
           res.end();
         }
@@ -82,9 +85,18 @@ module.exports.router = (req, res, next = ()=>{}) => {
       }
       res.end();
 
+    // GET
     } else if (req.url === '/background') {
-      if (fs.existsSync(this.backgroundImageFile)) {
+
+      if (fs.exists(this.backgroundImageFile)) {
+        console.log('exists');
+        var stat = fs.statSync(this.backgroundImageFile);
+
         headers['content-type'] = 'image/jpeg';
+        headers['content-length'] = stat.size;
+
+        console.log(headers);
+
         res.writeHead(200, headers);
 
         var readStream = fs.createReadStream(this.backgroundImageFile);
@@ -92,6 +104,7 @@ module.exports.router = (req, res, next = ()=>{}) => {
 
         // res.end();
       } else {
+        console.log('does not exist');
         res.writeHead(404, headers);
         res.end();
       };
